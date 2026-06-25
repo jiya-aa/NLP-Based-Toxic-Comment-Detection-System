@@ -1,0 +1,25 @@
+# Data & model artifacts (large / regenerable)
+data/
+models/
+*.keras
+*.h5
+*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# Gradio
+flagged/
+gradio_cached_examples/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
