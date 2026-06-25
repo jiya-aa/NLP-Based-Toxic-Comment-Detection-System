@@ -41,12 +41,16 @@ from src.preprocess import (
 )
 
 
-def train(model_name: str, epochs: int = EPOCHS) -> None:
+def train(model_name: str, epochs: int = EPOCHS, limit: int | None = None) -> None:
     tf.keras.utils.set_random_seed(RANDOM_SEED)
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
     print(f"Loading data from {TRAIN_CSV} ...")
     train_df = load_csv(TRAIN_CSV)
+    if limit:
+        # Quick smoke-test mode: train on a random subset for fast iteration.
+        train_df = train_df.sample(n=min(limit, len(train_df)), random_state=RANDOM_SEED)
+        print(f"--limit set: training on a {len(train_df)}-row subset")
 
     print("Building tokenizer ...")
     tokenizer = build_tokenizer(train_df["comment_text"])
@@ -100,8 +104,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Train a toxic-comment classifier.")
     parser.add_argument("--model", choices=MODEL_NAMES, default=DEFAULT_MODEL)
     parser.add_argument("--epochs", type=int, default=EPOCHS)
+    parser.add_argument("--limit", type=int, default=None,
+                        help="Train on a random N-row subset (quick smoke test).")
     args = parser.parse_args()
-    train(args.model, args.epochs)
+    train(args.model, args.epochs, args.limit)
 
 
 if __name__ == "__main__":

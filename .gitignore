@@ -23,3 +23,9 @@ gradio_cached_examples/
 Thumbs.db
 .vscode/
 .idea/
+
+# Kaggle API credentials (secret)
+kaggle.json
+install_log.txt
+train_full.log
+*.log
